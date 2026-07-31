@@ -1,0 +1,7 @@
+interface:
+  display_name: "一步一教"
+  short_description: "每次只指导一个操作，等待你的反馈并确认结果后再继续下一步"
+  default_prompt: "Use $step-by-step-coach to read my selected source task, confirm the context, and then guide me one action at a time."
+
+policy:
+  allow_implicit_invocation: true

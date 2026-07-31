@@ -1,0 +1,7 @@
+interface:
+  display_name: "一步一教：Git"
+  short_description: "逐步指导 Git 与 GitHub 操作，等待反馈并处理报错与风险"
+  default_prompt: "Use $step-by-step-git to guide me through this Git or GitHub task one action at a time."
+
+policy:
+  allow_implicit_invocation: false
