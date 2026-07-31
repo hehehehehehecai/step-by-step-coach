@@ -1,5 +1,7 @@
 # Step-by-Step Coach
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 > A one-action-at-a-time Codex coach for Git and GitHub workflows.
 
 Most Git tutorials give you an entire checklist. That works until you are unfamiliar with the workflow, hit an unexpected error, or worry that the next command may destroy work.
