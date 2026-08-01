@@ -24,6 +24,12 @@
 - Repository changes stay local until the user separately authorizes a GitHub push.
 - The Obsidian backup must include every file and subdirectory and must update `更新日志.md` for any knowledge-base modification.
 
+### 行为评估精简规则
+
+- 禁止为了统计结果、重复覆盖或提高样本数量而重跑同一提示词。
+- 每次观察到一个具体且不同的缺陷后，允许只做一次针对该缺陷的核心文字修复验证，直到该缺陷关闭。
+- 每次验证必须在记录中说明它是代表性评估，还是针对哪一项已观察缺陷的修复验证；保留所有原始失败证据。
+
 ---
 
 ## File Map
