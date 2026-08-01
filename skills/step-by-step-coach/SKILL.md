@@ -124,6 +124,12 @@ Git、GitHub、仓库上传、分支、提交、推送、Pull Request、合并�
 
 必须先完整读取子 Skill，再继续。没有对应子 Skill 的领域，应说明尚未配置该领域，不能临时给出一整套流程冒充单步教学。
 
+Vercel、网站部署、Preview、Production、环境变量、密钥、域名、DNS、Functions 和 Vercel 日志场景：
+
+**REQUIRED SUB-SKILL:** Use step-by-step-vercel.
+
+必须先完整读取 `step-by-step-vercel`，再开始教学。
+
 ## 单步教学协议
 
 每一轮最多给一个终端命令或一个网页操作，并使用：

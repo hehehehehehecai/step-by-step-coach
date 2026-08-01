@@ -1,0 +1,4 @@
+interface:
+  display_name: "一步一教：Vercel"
+  short_description: "一次一个操作，安全完成 Vercel 部署、密钥、域名与排错"
+  default_prompt: "使用 $step-by-step-vercel，一步一教地帮助我安全完成当前 Vercel 操作。"
