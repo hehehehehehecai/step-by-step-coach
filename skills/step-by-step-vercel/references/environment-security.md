@@ -4,7 +4,7 @@
 
 Last verified: 2026-08-03
 
-官方依据：[Environment Variables](https://vercel.com/docs/environment-variables)、[Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments)、[vercel env CLI](https://vercel.com/docs/cli/env)、[Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite)。
+官方依据：[Environment Variables](https://vercel.com/docs/environment-variables)、[Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments)、[Environments](https://vercel.com/docs/deployments/environments)、[Deployment Protection](https://vercel.com/docs/deployment-protection)、[Access Roles](https://vercel.com/docs/rbac/access-roles)、[Managing Team Members](https://vercel.com/docs/rbac/managing-team-members)、[vercel env CLI](https://vercel.com/docs/cli/env)、[Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite)。
 
 ## 开始前：只识别，不改值
 
@@ -22,6 +22,14 @@ Last verified: 2026-08-03
 4. 若只有一个指定的非生产 Git 分支需要不同值，选择该 **Preview** 分支专用变量；它会覆盖同名的通用 Preview 变量。不得把 Production 分支当作分支专用变量目标。
 
 需要对多个环境设置同名变量时，逐环境重复“识别—风险确认（若适用）—单一变更”循环；不得在一轮中同时改多个范围。创建、更新、删除、覆盖或扩大范围都可能改变下一次构建或运行时的行为；删除、覆盖、Production 变更及从较窄范围扩大到更广范围，均需独立风险确认。更安全的替代方案是先在 Development 或 Preview 使用不含生产数据的值验证。
+
+## Custom Environments：先看当前计划与页面，再决定是否可用
+
+先只读识别当前 Team、项目、计划，以及 Dashboard 是否显示 **Custom Environments**。截至本参考的核验日期，它是 Pro/Enterprise 的能力；不要因项目名称、分支名或历史截图推断当前可创建数量、权限或是否已经配置。
+
+若当前 Dashboard 显示可用，自定义环境只按当前页面中一个已选环境推进：先读取该环境名称、部署目标和变量作用域；不得推断变量继承或隔离关系，必须读取 Dashboard 对该环境实际显示的范围和变量。创建、修改或删除 Custom Environments 可能改变预生产流程或变量可达性；在对应变更即将执行前，先走核心 Skill 的独立高风险确认。
+
+若当前为 Hobby 或 Custom Environments 不可见，免费替代可以是 Preview 加分支专用变量，或使用单独项目；必须明确说明它们不等同于隔离，仍可能共享团队、仓库、域名、访问控制或人为配置，不能把它们称为 Custom Environments。每轮只要求一个只读页面检查或一个单一变更，不把环境创建、变量配置和部署混在同一轮。
 
 ## 客户端公开值与服务端密钥
 
@@ -42,6 +50,16 @@ Vercel 的环境变量变更不会应用到既有部署，只会应用于新的�
 将 Production 变量下载到本地会把敏感值写入磁盘，带来终端回显、备份、同步、误提交和他人读取风险。默认不下载 Production 值；更安全的替代方案是使用经遮盖的 Dashboard 配置核对，或在确有本地执行需求且已获独立确认时使用不会将值写入文件的 `vercel env run`。任何本地文件不得贴入聊天，且必须确认其不被提交、同步或共享。
 
 验证时只检查变量名称、目标环境或分支、敏感状态（如适用）以及新的部署是否完成；不读取、不打印、不回显值。若需要证明应用行为，索取不含秘密的结果或已遮盖截图。
+
+## Deployment Protection 与 Team/项目权限：先辨别对象，再保护或授予
+
+开始前只识别当前 Team、项目、计划、目标环境或域名，以及 Dashboard 当前可见的保护范围、保护方式和成员/项目角色。没有当前页面时，只要求一张已遮盖的 Dashboard 截图或一项角色/状态文字；不得根据套餐名称、旧截图或邀请链接猜测权限。
+
+当 Dashboard 显示可用时，**Standard Protection** 可作为保护部署 URL 的候选；不得承诺它能保护 Production 自定义域名，必须把 Production 访问和域名访问分别以当前 Dashboard 的保护范围确认。若用户需要保护生产域名而当前页面没有相应范围，停止在只读确认并说明当前能力受计划或附加功能限制；免费的替代可先使用 Standard Protection 保护非生产部署，或只向已获权限的协作者提供 Preview 访问，而不是声称已经保护了 Production 域名。
+
+保护设置的启用、停用、范围/方式调整、保护例外、成员邀请、移除成员、Team 角色变化和项目角色变化都属于高风险。每次只在紧接着执行的一项改变前获取核心 Skill 的独立确认；确认后仍只给一个 Dashboard 操作。遵循最小权限：先从完成当前任务所需的最低可见角色开始，只有当前 Dashboard 明确显示权限模型和用户确认影响后，才讨论更高权限；不要为了排错而扩大 Team 或项目访问。
+
+不得索要 Cookie、绕过密钥、会话数据或凭据，也不得要求 Protection Bypass、分享链接参数、登录令牌或受保护 URL 中的秘密参数作为证据。排错时只收集经遮盖的保护页面名称、状态码、当前角色或 Dashboard 显示的配置摘要。
 
 ## 疑似泄露：固定顺序
 

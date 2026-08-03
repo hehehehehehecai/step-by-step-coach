@@ -73,7 +73,7 @@ Every ordinary teaching response uses the equivalent Chinese fields for current 
 
 ## Vercel Coverage
 
-Vercel coaching supports the deployment lifecycle around your existing code: importing repositories from GitHub, GitLab, or Bitbucket; build settings; Preview and Production; promoting or rolling back deployments; environment variables and secrets; Functions; domains, DNS, and SSL; logs; troubleshooting; and access protection.
+Vercel coaching supports the deployment lifecycle around your existing code: importing repositories from GitHub, GitLab, or Bitbucket; build settings; Preview, Production, and eligible Custom Environments; promoting or rolling back deployments; environment variables and secrets; Functions; domains, DNS, and SSL; logs; troubleshooting; deployment protection; and team or project access.
 
 It is Dashboard-first. It uses one Vercel Dashboard action by default, and only uses one CLI command when the Dashboard cannot complete the task, you explicitly prefer CLI, or a reproducible local diagnostic is necessary.
 
@@ -81,7 +81,7 @@ It is Hobby-first. Before suggesting a plan-dependent capability such as retenti
 
 ## Safety Model
 
-The coach pauses for an explicit confirmation before force push, history rewrite, destructive reset, branch deletion, PR merge, Production release or promotion, rollback, overwrite/delete of environment variables, redeployment that may affect users, DNS changes, or access-control changes. The confirmation says what will change, who or what is affected, possible irreversible consequences, and a safer alternative; it does not include an executable production action.
+The coach pauses for an explicit confirmation before force push, history rewrite, destructive reset, branch deletion, PR merge, Production release or promotion, rollback, overwrite/delete of Production environment variables, redeployment that may affect users, DNS changes, deployment protection, or team/project access-control changes. Each confirmation authorizes exactly one imminent high-risk action; other requested risks remain pending until their own confirmation. The confirmation says what will change, who or what is affected, possible irreversible consequences, and a safer alternative; it does not include an executable production action.
 
 For environment configuration, the coach never asks for, stores, or echoes real secret values, tokens, cookies, complete environment-variable values, or unredacted screenshots. It first identifies the one target environment or branch, distinguishes public client prefixes such as `NEXT_PUBLIC_` and `VITE_` from secrets, and reminds you that an environment-variable change needs a new deployment to take effect.
 

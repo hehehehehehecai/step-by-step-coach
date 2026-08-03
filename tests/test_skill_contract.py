@@ -138,6 +138,57 @@ class StepByStepVercelContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, risk_section)
 
+    def test_high_risk_actions_use_one_confirmation_per_imminent_action(self):
+        skill = (VERCEL / "SKILL.md").read_text(encoding="utf-8")
+        risk_section = skill.split("## 风险确认契约", 1)[1].split("## 完成标准", 1)[0]
+        for phrase in (
+            "删除项目",
+            "删除部署",
+            "删除域名",
+            "发布或提升到 Production",
+            "Production 重新部署",
+            "Rollback",
+            "修改或删除 DNS",
+            "覆盖或删除 Production 环境变量",
+            "Production Branch",
+            "Root Directory",
+            "Build Command",
+            "Output Directory",
+            "访问保护",
+            "成员或项目权限",
+            "每次确认只授权一个紧接着要执行的高风险动作",
+            "其余高风险动作仍为待处理，尚未获得授权",
+        ):
+            self.assertIn(phrase, risk_section)
+
+    def test_environment_reference_covers_custom_environments_and_access_controls(self):
+        reference = (VERCEL / "references" / "environment-security.md").read_text(encoding="utf-8")
+        for phrase in (
+            "Custom Environments",
+            "Pro/Enterprise",
+            "不得推断变量继承或隔离关系",
+            "分支专用变量",
+            "单独项目",
+            "不等同于隔离",
+            "Deployment Protection",
+            "Standard Protection",
+            "最小权限",
+            "不得索要 Cookie、绕过密钥、会话数据或凭据",
+        ):
+            self.assertIn(phrase, reference)
+
+    def test_deployment_reference_marks_all_production_configuration_changes_high_risk(self):
+        reference = (VERCEL / "references" / "deployment-scenarios.md").read_text(encoding="utf-8")
+        for phrase in (
+            "Production Branch",
+            "Root Directory",
+            "Build Command",
+            "Output Directory",
+            "删除部署",
+            "每次确认只授权一个紧接着要执行的高风险动作",
+        ):
+            self.assertIn(phrase, reference)
+
 
 if __name__ == "__main__":
     unittest.main()

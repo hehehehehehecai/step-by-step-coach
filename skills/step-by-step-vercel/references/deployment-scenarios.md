@@ -31,11 +31,12 @@ Last verified: 2026-08-03
 
 ## 配置：只核对，不把不确定默认值当事实
 
-Vercel 会自动检测很多框架并设置默认值，但每个项目在首次部署或变更前只核对当前页面显示的一个配置项。依次可能需要确认的项目是：**Framework Preset**、**Root Directory**、Build Command、Output Directory、Install Command 与运行时版本（例如 Node.js Version）。
+Vercel 会自动检测很多框架并设置默认值，但每个项目在首次部署或变更前只核对当前页面显示的一个配置项。依次可能需要确认的项目是：**Production Branch**、**Framework Preset**、**Root Directory**、Build Command、Output Directory、Install Command 与运行时版本（例如 Node.js Version）。
 
+- **Production Branch**：先只读确认当前生产分支；变更会改变后续哪些提交面向 Production，属于高风险动作。
 - **Framework Preset**：先记录检测结果；无法确认时不要手工改为其他框架。
 - **Root Directory**：确认应用在仓库中的实际目录。此设置会限制构建可访问的目录，并影响安装路径；变更仅从下一次部署生效。改变 Root Directory 是高风险动作，必须先走高风险门禁。
-- **Build Command / Output Directory / Install Command**：优先核对自动检测值或当前覆盖值。Output Directory 指向构建后静态托管的目录；Install Command 由 Vercel 自动检测时，不要无证据覆盖。
+- **Build Command / Output Directory / Install Command**：优先核对自动检测值或当前覆盖值。Output Directory 指向构建后静态托管的目录；Install Command 由 Vercel 自动检测时，不要无证据覆盖。改变 Build Command 或 Output Directory 会影响后续 Production 构建，属于高风险动作；Install Command 仍需先做只读确认并依据具体影响判断，不能顺带覆盖。
 - **运行时版本**：仅确认当前项目设置或受支持运行时；不要在本参考中指导修改业务代码或运行时实现。
 
 配置改动尚未产生新部署时，状态仍是“已导入、未部署”；不得声称改动已经生效。
@@ -44,7 +45,7 @@ Vercel 会自动检测很多框架并设置默认值，但每个项目在首次�
 
 正常情况下，构建成功后先在 **Preview** 验证目标 URL、部署环境和用户当前目标；只有用户能独立确认例外理由时，才讨论跳过 Preview 的请求。即使用户要求跳过、时间紧急或声明自行承担后果，也不得绕过高风险确认。
 
-以下动作必须单独占用一轮高风险确认，并完全遵守核心 Skill 的“四标题风险确认卡”契约：首次或再次发布到 **Production**、将部署 **Promote** 到 Production、**Rollback**、删除项目、改变 **Root Directory**，以及可能影响线上服务的 Production 重新部署。确认卡只能说明“准备做什么”“影响对象”“可能不可逆后果”“更安全的替代方案”并索取“明确确认”；不得在该轮提供点击路径、命令或可执行生产操作。
+以下动作必须单独占用一轮高风险确认，并完全遵守核心 Skill 的“四标题风险确认卡”契约：首次或再次发布到 **Production**、将部署 **Promote** 到 Production、**Rollback**、删除项目、删除部署、改变 **Production Branch**、**Root Directory**、**Build Command** 或 **Output Directory**，以及可能影响线上服务的 Production 重新部署。每次确认只授权一个紧接着要执行的高风险动作；用户同时提出的其他高风险操作必须标为待处理、尚未获得授权，并在它们即将执行前重新确认。确认卡只能说明“准备做什么”“影响对象”“可能不可逆后果”“更安全的替代方案”并索取“明确确认”；不得在该轮提供点击路径、命令或可执行生产操作。
 
 更安全的替代方案默认是先完成 Preview 验证；对删除项目，替代方案是先保留项目并只读确认不再使用；对 Root Directory 变更，替代方案是先在 Preview 用已确认的目录验证。
 
