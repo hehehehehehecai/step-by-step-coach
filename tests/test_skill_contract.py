@@ -100,6 +100,7 @@ class StepByStepVercelContractTests(unittest.TestCase):
         self.assertIn("不得清空", reference)
         self.assertNotIn("76.76.21.21", reference)
         self.assertIn("_acme-challenge 子域委派不同于整域 Nameserver 切换", reference)
+        self.assertIn("从项目移除或删除域名", reference)
 
     def test_troubleshooting_reference_is_evidence_driven(self):
         reference = (VERCEL / "references" / "troubleshooting.md").read_text(encoding="utf-8")

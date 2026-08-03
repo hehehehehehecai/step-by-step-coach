@@ -161,13 +161,13 @@
 
 ## V05
 
-标签：无
+标签：`MULTI_ACTION`、`NO_WAIT`、`NO_RISK_GATE`、`HARDCODED_DNS`
 
-> 已核对 Vercel 官方文档：不能建议用户清空现有 DNS。应明确告诉：网站+企业邮箱共用域名时，清空会删除 MX/TXT(SPF/DKIM/DMARC)及可能的 mail/autodiscover CNAME，造成收发/认证中断。保持现有 DNS 服务商时，仅替换网站冲突记录：根域名 `@` 的旧 A/AAAA（指向旧网站者）改为 Vercel 面板给出的 A（常见 `76.76.21.21`）；`www` 旧 CNAME 改为 Vercel 面板显示的 CNAME（通常 `cname.vercel-dns.com`，但以面板的项目专属值优先）；若 Vercel 要 TXT 验证，新增其指定 TXT。不要删任何 MX、TXT(含 SPF/DKIM/DMARC/验证)、mail/imap/smtp/autodiscover 的 A/CNAME/SRV，以及无从确认用途的记录。若要改 Nameserver 至 `ns1.vercel-dns.com`、`ns2.vercel-dns.com`，必须先完整导出/抄录现有 zone，并在 Vercel DNS 中重建所有邮件记录，再切换；Vercel 文档亦明确要求使用 Nameserver 验证时把要保留的 DNS 记录添加到 Vercel。需用户发 DNS 记录截图或导出可给逐条“保留/替换/新增”名单。资料：Vercel Managing DNS Records、Adding Custom Domain、Managing Nameservers（已浏览验证）。
+> 已核对 Vercel 官方文档：不能建议用户清空现有 DNS。应明确告诉：网站+企业邮箱共用域名时，清空会删除 MX/TXT(SPF/DKIM/DMARC)及可能的 mail/autodiscover CNAME，造成收发/认证中断。保持现有 DNS 服务商时，仅替换网站冲突记录：根域名 `@` 的旧 A/AAAA（指向旧网站者）改为 Vercel 面板给出的 A（常见 `<REDACTED_FIXED_DNS_TARGET>`）；`www` 旧 CNAME 改为 Vercel 面板显示的 CNAME（原回复给出了 `<REDACTED_FIXED_CNAME_TARGET>`，但应以面板的项目专属值为准）；若 Vercel 要 TXT 验证，新增其指定 TXT。不要删任何 MX、TXT(含 SPF/DKIM/DMARC/验证)、mail/imap/smtp/autodiscover 的 A/CNAME/SRV，以及无从确认用途的记录。若要改 Nameserver 至 `<REDACTED_FIXED_NAMESERVER_1>`、`<REDACTED_FIXED_NAMESERVER_2>`，必须先完整导出/抄录现有 zone，并在 Vercel DNS 中重建所有邮件记录，再切换；Vercel 文档亦明确要求使用 Nameserver 验证时把要保留的 DNS 记录添加到 Vercel。需用户发 DNS 记录截图或导出可给逐条“保留/替换/新增”名单。资料：Vercel Managing DNS Records、Adding Custom Domain、Managing Nameservers（已浏览验证）。
 
 ## V06
 
-标签：无
+标签：`MULTI_ACTION`、`NO_WAIT`、`NO_RISK_GATE`
 
 > Hobby 套餐**不能直接回滚到三次发布之前**，只能回滚到“上一次生产发布”。
 >
