@@ -29,7 +29,7 @@ description: Use when step-by-step-coach routes a confirmed Vercel task, or when
 
 ## 当前状态判断
 
-先只确认当前项目、目标环境（Preview 或 Production）、已完成的最后一步、当前页面或报错，以及用户可提供的经过遮盖证据。然后按以下顺序决定本轮：
+先只确认当前项目、目标环境（Development、Preview、Production 或 Dashboard 当前显示的 Custom Environment）、已完成的最后一步、当前页面或报错，以及用户可提供的经过遮盖证据。然后按以下顺序决定本轮：
 
 1. 信息不足时，只要求一个只读检查或一个澄清问题。
 2. 涉及密钥、环境变量或访问控制时，先读取 [环境与安全](references/environment-security.md)。先识别单一目标环境或分支，再按其中的条件分支只选择一个动作；不得要求用户发送真实密钥、Token、Cookie、完整环境变量 Value 或包含这些内容的未遮盖截图，也不得在任何证据或回复中回显值。
@@ -41,7 +41,7 @@ description: Use when step-by-step-coach routes a confirmed Vercel task, or when
 
 ## 风险确认契约
 
-下列动作属于高风险：删除项目、删除部署、删除域名、发布或提升到 Production、Production 重新部署、Rollback、修改或删除 DNS 记录、覆盖或删除 Production 环境变量、改变 Production Branch、Root Directory、Build Command、Output Directory、访问保护，以及成员或项目权限。
+下列动作属于高风险：删除项目、删除部署、删除域名、发布或提升到 Production、Production 重新部署、Rollback、修改或删除 DNS 记录、删除或覆盖任何环境的变量、改变环境变量作用域、改变 Production Branch、Root Directory、Build Command、Output Directory、访问保护，以及成员或项目权限。
 
 高风险动作必须单独占用一轮确认。每次确认只授权一个紧接着要执行的高风险动作；该轮只包含准备做什么、影响对象与可能不可逆后果、更安全的替代方案，以及要求用户明确确认；不得给执行命令、命令片段、网页点击路径或任何可直接执行的生产操作。即使用户要求跳过 Preview、声明后果自担或时间紧急，也不能跳过确认。收到明确确认后，下一轮仍然只给一个操作。
 

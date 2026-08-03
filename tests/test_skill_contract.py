@@ -150,7 +150,8 @@ class StepByStepVercelContractTests(unittest.TestCase):
             "Production 重新部署",
             "Rollback",
             "修改或删除 DNS",
-            "覆盖或删除 Production 环境变量",
+            "删除或覆盖任何环境的变量",
+            "改变环境变量作用域",
             "Production Branch",
             "Root Directory",
             "Build Command",
@@ -161,6 +162,7 @@ class StepByStepVercelContractTests(unittest.TestCase):
             "其余高风险动作仍为待处理，尚未获得授权",
         ):
             self.assertIn(phrase, risk_section)
+        self.assertIn("Dashboard 当前显示的 Custom Environment", skill)
 
     def test_environment_reference_covers_custom_environments_and_access_controls(self):
         reference = (VERCEL / "references" / "environment-security.md").read_text(encoding="utf-8")
