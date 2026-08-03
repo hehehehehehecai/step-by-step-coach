@@ -2,21 +2,13 @@
 
 [English](README.md) | 简体中文
 
-> 一个面向 Git 与 GitHub 操作的 Codex 教练：每轮只教一个动作，等待真实结果后再继续。
+> 面向 Git/GitHub 与 Vercel 的 Codex 单步操作教练：一次只教一个动作，等真实结果回来再继续。
 
-很多人第一次接触 Vibe Coding，刚刚让 AI 把想法变成代码，就被 Git、分支、提交和 PR 挡在了下一关。问 AI 怎么办，它常常非常热心地一次甩来十几个步骤——每个字都认识，连在一起却不知道先做什么，更担心输错一条命令把项目弄乱。无论你是完全没有计算机基础，还是只是偶尔使用 Git、总记不住操作流程，“一步一教”都不会催你赶进度：一次只做一件事，确认没问题后再继续。
-
-“一步一教”采用以下协作方式：
-
-- 每轮只提供一个命令或一个 GitHub 网页操作；
-- 等待用户反馈真实结果后再继续；
-- 根据实际输出、报错或页面状态决定下一步；
-- 在强制推送、历史重写、破坏性重置、删除分支、合并 PR 或可能泄露敏感文件前暂停；
-- 可以先读取用户指定的 Codex 来源任务，确认上下文后再开始教学。
+很多教程会一次性给出完整清单。“一步一教”换了一种方式：先只做一件事，等你提供真实页面、输出或报错，再根据证据决定下一步。它适合 Git 新手、偶尔操作的人、需要接触仓库的非开发者，以及刚开始 Vibe Coding、希望先弄懂再动手的用户。
 
 ## Skill 架构
 
-本仓库包含两个互相配合、但彼此独立的 Codex Skill：
+本仓库包含三个互相配合、彼此独立的 Codex Skill。安装或复制时必须保留每个目录及其全部子目录。
 
 ```text
 skills/
@@ -24,46 +16,37 @@ skills/
 │  ├─ SKILL.md
 │  └─ agents/
 │     └─ openai.yaml
-└─ step-by-step-git/
+├─ step-by-step-git/
+│  ├─ SKILL.md
+│  ├─ agents/
+│  │  └─ openai.yaml
+│  └─ references/
+│     └─ scenarios.md
+└─ step-by-step-vercel/
    ├─ SKILL.md
    ├─ agents/
    │  └─ openai.yaml
    └─ references/
-      └─ scenarios.md
+      ├─ deployment-scenarios.md
+      ├─ environment-security.md
+      ├─ domains-and-dns.md
+      └─ troubleshooting.md
 ```
 
-### `step-by-step-coach`
-
-父 Skill，负责：
-
-- 通用的单步教学协议；
-- 来源任务选择与只读接续；
-- 上下文确认；
-- 等待用户反馈；
-- 高风险操作门禁；
-- 根据任务领域调用对应的子 Skill。
-
-### `step-by-step-git`
-
-Git 子 Skill，负责：
-
-- 判断当前 Git 与 GitHub 状态；
-- 选择当前唯一需要执行的动作；
-- 解释命令输出与报错；
-- 处理常见 Git/GitHub 场景；
-- 在危险操作前执行安全检查。
-
-两个 Skill 必须作为 Codex Skills 根目录下的同级目录安装。不要把 `step-by-step-git` 放进 `step-by-step-coach` 目录内部。
+- `step-by-step-coach`：负责上下文确认、固定单步回复格式、等待和风险门禁。
+- `step-by-step-git`：负责 Git/GitHub 状态判断、报错处理和安全仓库操作。
+- `step-by-step-vercel`：在父 Skill 确认背景后，负责 Vercel 部署与配置判断。
 
 ## 安装
 
-克隆本仓库，然后把两个 Skill 目录复制到个人 Codex Skills 目录。
+克隆本仓库后，将三个完整的 Skill 目录复制到个人 Codex Skills 目录。
 
 ### Windows PowerShell
 
 ```powershell
 Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-coach" -Destination "$env:USERPROFILE\.codex\skills"
 Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-git" -Destination "$env:USERPROFILE\.codex\skills"
+Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-vercel" -Destination "$env:USERPROFILE\.codex\skills"
 ```
 
 ### macOS 或 Linux
@@ -71,158 +54,48 @@ Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-git" -Destination "$env:U
 ```bash
 cp -R ./skills/step-by-step-coach ~/.codex/skills/
 cp -R ./skills/step-by-step-git ~/.codex/skills/
+cp -R ./skills/step-by-step-vercel ~/.codex/skills/
 ```
 
-安装完成后重启 Codex。
+安装后重启 Codex。
 
 ## 使用方式
 
-新建一个 Codex 任务，然后显式调用：
+新建一个 Codex 任务，然后调用：
 
 ```text
 $step-by-step-coach
 ```
 
-### 接续另一个 Codex 任务
+如果环境提供 `list_threads` 和 `read_thread`，父 Skill 会只读你选定的来源任务，并要求你先确认上下文，再路由到 Git/GitHub 或 Vercel。旧任务不可见时，可以提供任务摘要、交接文件或项目笔记。
 
-如果当前 Codex 环境提供 `list_threads` 和 `read_thread`，父 Skill 可以：
+每个普通教学回复都使用“当前目的、你现在只做、正常情况下、完成后请回复”四个字段；在你反馈本轮结果前，不会给下一步。
 
-1. 显示最近的 Codex 任务；
-2. 让用户选择需要接续的来源任务；
-3. 只读提取任务背景；
-4. 生成上下文确认卡；
-5. 得到用户确认后再开始 Git 教学。
+## Vercel 覆盖范围
 
-父 Skill 不会向来源任务发送消息，也不会重命名、归档或改变来源任务的其他状态。
+Vercel 子 Skill 只处理既有代码周边的部署与配置：从 GitHub、GitLab 或 Bitbucket 导入仓库，构建设置，Preview 与 Production，提升或回滚部署，环境变量与密钥，Functions，域名、DNS 与 SSL，日志、排错和访问保护。
 
-如果旧任务在另一台电脑上不可见，可以改为提供：
+它默认 Dashboard-first：优先给一个 Vercel Dashboard 网页操作；只有 Dashboard 无法完成、你明确偏好 CLI，或确实需要可复现的本地诊断时，才会给一个 CLI 命令。
 
-- 任务摘要；
-- 上下文交接文件；
-- 项目记录或知识库笔记。
-
-Skill 会把这些信息整理为相同的上下文确认卡。
-
-## 单步教学格式
-
-确认上下文后，每个普通教学轮次固定使用以下格式：
-
-```text
-当前目的：
-[说明当前动作解决什么问题]
-
-你现在只做：
-[一个命令，或一个 GitHub 网页操作]
-
-正常情况下：
-[描述完成后应该看到的结果]
-
-完成后请回复：
-[要求粘贴完整输出、报错原文或页面截图]
-```
-
-强制规则：
-
-- 每轮最多一个操作；
-- 不使用 `&&`、`;`、管道或脚本串联多个动作；
-- 不提前展示后续步骤；
-- 不一次性给出完整操作清单；
-- 不猜测路径、分支名、远端地址或仓库名称；
-- 用户没有反馈前不得继续；
-- Codex 只负责指导，不代替用户执行 Git 或 GitHub 操作。
-
-## 当前覆盖的 Git 与 GitHub 场景
-
-- 第一次把本地项目上传到 GitHub；
-- 查看仓库状态；
-- 暂存与提交修改；
-- 推送当前分支；
-- 创建和切换分支；
-- 创建 Pull Request；
-- 更新已有 Pull Request；
-- 拉取远端更新；
-- 合并 Pull Request；
-- 处理 non-fast-forward；
-- 处理未提交修改；
-- 处理合并冲突；
-- 处理认证、权限、远端地址和分支名错误。
-
-第一版暂不覆盖：
-
-- 服务器部署；
-- 网站发布；
-- Docker 操作；
-- npm 或其他软件包发布。
-
-这些领域可以在后续通过增加新的子 Skill 扩展。
+它默认 Hobby-first：涉及保留、回滚、访问保护、团队控制等可能受套餐影响的能力时，先确认项目是否为 Hobby 以及 Dashboard 实际显示的能力；有免费替代方案时会先说明，不会臆测套餐能力。
 
 ## 安全机制
 
-以下操作必须在给出具体命令或网页操作前单独暂停：
+以下操作必须先得到明确确认：force push、重写历史、破坏性重置、删除分支、合并 PR、发布或提升到 Production、回滚、覆盖或删除环境变量、可能影响用户的重新部署、DNS 修改以及访问控制修改。确认轮会说明准备做什么、影响对象、可能不可逆后果和更安全的替代方案，但不会包含可直接执行的生产操作。
 
-- force push；
-- 重写提交历史；
-- 删除本地或远端分支；
-- 丢弃未提交修改；
-- hard reset 或回退到旧提交；
-- 覆盖远端状态；
-- 合并或关闭 Pull Request；
-- 上传 `.env`、Token、SSH 私钥、凭据、数据库或异常大文件。
+处理 environment 配置时，Skill 不会索要、保存或回显真实密钥、Token、Cookie、完整环境变量值或未遮盖截图；会先确认唯一目标环境或分支，区分 `NEXT_PUBLIC_`、`VITE_` 等客户端公开前缀与密钥，并提醒环境变量修改后需要重新部署才会生效。
 
-高风险确认轮必须说明：
+处理域名和 DNS 时，Skill 会以 Vercel Dashboard 当前显示的实时记录目标为准，不会写死 DNS 值；会先询问既有邮箱依赖，绝不删除、覆盖或清空 MX 记录。DNS、Nameserver 和证书委派都必须单独经过风险确认。
 
-- 准备执行的动作；
-- 影响的对象；
-- 可能造成的后果；
-- 更安全的替代方案；
-- 需要用户明确确认的内容。
+## 已知边界
 
-用户确认前不得提供可直接执行的破坏性命令。
-
-## 这个 Skill 适合谁
-
-它不是另一份 Git 命令大全，也不是为了替代所有自动化操作。
-
-它更适合：
-
-- 刚开始尝试 Vibe Coding、没有计算机基础的用户；
-- 刚开始使用 Git 和 GitHub 的用户；
-- 只会基本 `commit`、`push`，遇到异常就不知道如何继续的人；
-- 很久才操作一次、记不住流程顺序的人；
-- 需要接触仓库的产品经理、设计师、运营或独立创作者；
-- 希望理解每一步，而不是完全把仓库交给 AI 操作的人；
-- 对删除、覆盖和历史重写等操作比较谨慎的人；
-- 容易被长步骤和大量信息压垮的人。
-
-它解决的主要问题不是“缺少 Git 命令”，而是：
-
-> 降低操作过程中的认知负担和焦虑，让每一步都能被理解、执行和验证。
+这些 Skill 只负责一次一个动作的安全教学：不编写业务代码，不代替你执行被教学的 Git 或 Vercel 操作，不保存凭据，也不能保证第三方服务一定接受某项配置。当前暂不覆盖 Docker 和软件包发布。没有配置对应子 Skill 的领域，父 Skill 会明确说明，而不是假装提供完整教学流程。
 
 ## 示例
 
 - [第一次上传本地项目](examples/first-upload.md)
 - [Force Push 风险确认](examples/force-push-safety.md)
 
-## 已知边界
-
-- `list_threads` 和 `read_thread` 是 Codex 环境提供的系统工具，不包含在本仓库中；
-- 不同 Codex 环境能够看到的历史任务可能不同；
-- 来源任务不可见时需要人工提供任务摘要或交接材料；
-- Skill 不保存 GitHub Token、密码、SSH 私钥或其他凭据；
-- Skill 不会替用户执行真实的 Git 命令或 GitHub 页面操作。
-
-## 贡献
-
-欢迎提交 Issue 或 Pull Request，例如：
-
-- 补充新的 Git/GitHub 场景；
-- 改进新手提示和错误解释；
-- 增加新的领域子 Skill；
-- 提供真实使用案例；
-- 修复可能绕过单步协议或风险门禁的情况。
-
-提交贡献时，请勿包含真实 Token、密码、私钥、个人绝对路径或其他敏感信息。
-
 ## License
 
-本项目使用 [MIT License](LICENSE)。
+[MIT License](LICENSE)

@@ -118,6 +118,13 @@ class StepByStepVercelContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, reference)
 
+    def test_readmes_document_vercel_installation(self):
+        for name in ("README.md", "README.zh-CN.md"):
+            readme = (ROOT / name).read_text(encoding="utf-8")
+            self.assertIn("step-by-step-vercel", readme)
+            self.assertIn("environment", readme.lower())
+            self.assertIn("Vercel", readme)
+
 
 if __name__ == "__main__":
     unittest.main()

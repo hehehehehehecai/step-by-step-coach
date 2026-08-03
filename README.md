@@ -2,23 +2,13 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-> A one-action-at-a-time Codex coach for Git and GitHub workflows.
+> Calm, one-action-at-a-time Codex coaching for Git/GitHub and Vercel workflows.
 
-Most Git tutorials give you an entire checklist. That works until you are unfamiliar with the workflow, hit an unexpected error, or worry that the next command may destroy work.
-
-Step-by-Step Coach uses a different contract:
-
-- one command or one GitHub action per turn;
-- wait for the real result before continuing;
-- adapt the next action to that result;
-- stop before force push, history rewrites, destructive resets, branch deletion, PR merge, or possible secret exposure;
-- optionally read a user-selected Codex task and confirm its context before starting.
-
-It is designed for Git beginners, occasional Git users, non-developers working with repositories, and anyone who prefers a calm interactive guide over a long procedure.
+Most tutorials give a whole checklist. This project instead gives one action, waits for the real result, then chooses the next action from that evidence. It is for Git beginners, occasional users, non-developers, and people starting with Vibe Coding who want to understand what happens before they change anything.
 
 ## Skills
 
-This repository contains two sibling Codex Skills:
+This repository contains three sibling Codex Skills. Keep every directory and subdirectory intact when installing or copying them.
 
 ```text
 skills/
@@ -26,29 +16,37 @@ skills/
 │  ├─ SKILL.md
 │  └─ agents/
 │     └─ openai.yaml
-└─ step-by-step-git/
+├─ step-by-step-git/
+│  ├─ SKILL.md
+│  ├─ agents/
+│  │  └─ openai.yaml
+│  └─ references/
+│     └─ scenarios.md
+└─ step-by-step-vercel/
    ├─ SKILL.md
    ├─ agents/
    │  └─ openai.yaml
    └─ references/
-      └─ scenarios.md
+      ├─ deployment-scenarios.md
+      ├─ environment-security.md
+      ├─ domains-and-dns.md
+      └─ troubleshooting.md
 ```
 
-`step-by-step-coach` owns the generic teaching contract, source-task handoff, context confirmation, waiting state, and safety gates.
-
-`step-by-step-git` owns Git and GitHub state detection, error recovery, and scenario-specific decisions.
-
-Keep them as sibling directories. Do not place the Git Skill inside the parent Skill.
+- `step-by-step-coach` owns context confirmation, the fixed one-action reply shape, waiting, and risk gates.
+- `step-by-step-git` handles Git and GitHub state, errors, and safe repository operations.
+- `step-by-step-vercel` handles Vercel deployment and configuration decisions after the parent has confirmed context.
 
 ## Install
 
-Clone this repository, then copy both Skill directories into your personal Codex Skills directory.
+Clone this repository, then copy all three complete Skill directories into your personal Codex Skills directory.
 
 ### Windows PowerShell
 
 ```powershell
 Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-coach" -Destination "$env:USERPROFILE\.codex\skills"
 Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-git" -Destination "$env:USERPROFILE\.codex\skills"
+Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-vercel" -Destination "$env:USERPROFILE\.codex\skills"
 ```
 
 ### macOS or Linux
@@ -56,6 +54,7 @@ Copy-Item -Recurse -LiteralPath ".\skills\step-by-step-git" -Destination "$env:U
 ```bash
 cp -R ./skills/step-by-step-coach ~/.codex/skills/
 cp -R ./skills/step-by-step-git ~/.codex/skills/
+cp -R ./skills/step-by-step-vercel ~/.codex/skills/
 ```
 
 Restart Codex after installation.
@@ -68,73 +67,34 @@ Start a fresh Codex task and invoke:
 $step-by-step-coach
 ```
 
-If your Codex environment exposes `list_threads` and `read_thread`, the parent Skill can show recent tasks, read the task you select, and produce a context confirmation card. It never sends messages to, renames, archives, or otherwise changes the source task.
+The parent Skill can read a user-selected source task when `list_threads` and `read_thread` are available, then asks you to confirm the context before it routes to Git/GitHub or Vercel. If the old task is unavailable, provide a summary, handoff file, or project note instead.
 
-If the source task is unavailable—for example, after moving to another computer—provide a task summary, a handoff file, or a project note instead.
+Every ordinary teaching response uses the equivalent Chinese fields for current purpose, one action, expected result, and requested evidence. It gives no next step until you reply with the result.
 
-After you confirm the context, a normal teaching turn follows this fixed shape:
+## Vercel Coverage
 
-```text
-Current purpose:
-[why this single action is needed]
+Vercel coaching supports the deployment lifecycle around your existing code: importing repositories from GitHub, GitLab, or Bitbucket; build settings; Preview and Production; promoting or rolling back deployments; environment variables and secrets; Functions; domains, DNS, and SSL; logs; troubleshooting; and access protection.
 
-Do only this now:
-[one command or one GitHub action]
+It is Dashboard-first. It uses one Vercel Dashboard action by default, and only uses one CLI command when the Dashboard cannot complete the task, you explicitly prefer CLI, or a reproducible local diagnostic is necessary.
 
-Normally you should see:
-[the success signal]
-
-Reply with:
-[the complete output, exact error, or a screenshot]
-```
-
-The installed Skills use the equivalent Chinese field names.
-
-## Covered Git and GitHub Scenarios
-
-- first upload of a local project;
-- status, staging, commit, and push;
-- branches and upstream tracking;
-- creating and updating pull requests;
-- pulling remote updates;
-- non-fast-forward errors;
-- merge conflicts;
-- authentication, permission, remote, and branch-name errors;
-- destructive-operation and secret-exposure gates.
-
-The first version intentionally does not cover server deployment, website release, Docker operations, or package publishing.
+It is Hobby-first. Before suggesting a plan-dependent capability such as retention, rollback, access, or team controls, it checks whether the project is on Hobby and what the Dashboard actually offers, then gives a free alternative when available. It never assumes plan capability.
 
 ## Safety Model
 
-The coach must pause before:
+The coach pauses for an explicit confirmation before force push, history rewrite, destructive reset, branch deletion, PR merge, Production release or promotion, rollback, overwrite/delete of environment variables, redeployment that may affect users, DNS changes, or access-control changes. The confirmation says what will change, who or what is affected, possible irreversible consequences, and a safer alternative; it does not include an executable production action.
 
-- force push;
-- rewriting commit history;
-- deleting branches;
-- discarding uncommitted work;
-- hard reset or rollback;
-- overwriting remote state;
-- merging or closing a pull request;
-- uploading `.env` files, tokens, private keys, credentials, databases, or suspiciously large files.
+For environment configuration, the coach never asks for, stores, or echoes real secret values, tokens, cookies, complete environment-variable values, or unredacted screenshots. It first identifies the one target environment or branch, distinguishes public client prefixes such as `NEXT_PUBLIC_` and `VITE_` from secrets, and reminds you that an environment-variable change needs a new deployment to take effect.
 
-The confirmation turn explains the target, impact, consequences, and a safer alternative. It must not contain an executable destructive command.
+For domain and DNS work, it obtains the live record target from the current Vercel Dashboard instead of documenting a fixed target. It asks about existing mail dependencies and does not delete, overwrite, or clear MX records. DNS, nameserver, and certificate-delegation changes always receive their own confirmation round.
+
+## Boundaries
+
+The Skills teach one safe operational action at a time; they do not write your business code, execute the taught Git or Vercel actions for you, retain credentials, or guarantee that a third-party provider will accept a configuration. Docker and package publishing are not currently covered. When a domain has no configured child Skill, the parent says so instead of pretending to provide a full guided workflow.
 
 ## Examples
 
 - [First local project upload](examples/first-upload.md)
 - [Force-push safety gate](examples/force-push-safety.md)
-
-## 中文说明
-
-“一步一教”不是另一份 Git 命令大全。它解决的是长步骤带来的认知压力和操作焦虑：
-
-- 每轮只做一个动作；
-- 必须根据真实输出决定下一步；
-- 用户没有反馈前不得继续；
-- 危险操作先解释影响并单独确认；
-- Codex 只负责指导，不替用户执行 Git 或 GitHub 操作。
-
-父 Skill 可以在新的 Codex 任务中只读接续用户选定的来源任务。`list_threads` 和 `read_thread` 是 Codex 环境提供的系统工具，不包含在本仓库中；旧任务不可见时，可以改用任务摘要、上下文交接文件或知识库记录。
 
 ## License
 
