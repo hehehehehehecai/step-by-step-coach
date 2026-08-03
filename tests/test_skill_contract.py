@@ -70,6 +70,23 @@ class StepByStepVercelContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, reference)
 
+    def test_deployment_reference_covers_full_lifecycle(self):
+        reference = (VERCEL / "references" / "deployment-scenarios.md").read_text(encoding="utf-8")
+        for phrase in (
+            "GitHub",
+            "GitLab",
+            "Bitbucket",
+            "Framework Preset",
+            "Root Directory",
+            "Preview",
+            "Production",
+            "Promote",
+            "Rollback",
+            "Hobby",
+            "Functions",
+        ):
+            self.assertIn(phrase, reference)
+
 
 if __name__ == "__main__":
     unittest.main()
