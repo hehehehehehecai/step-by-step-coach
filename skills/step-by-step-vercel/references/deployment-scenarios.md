@@ -19,7 +19,8 @@ Last verified: 2026-08-03
 | Ready | 部署已成功生成 URL | 按其环境转入 Preview 验证或 Production 状态确认 |
 | Preview | 非生产部署可访问 | 默认先完成与目标有关的 Preview 验证 |
 | Production | 生产部署存在 | 仅确认是否为 Current；生产变更必须先走高风险门禁 |
-| Promoted / Current | 已提升且域名正指向该部署 | 确认目标 URL、环境和 Current 状态；不可据此推断外部资源正常 |
+| Promoted | 部署已被提升，但不必然是当前承载生产域名的部署 | 只读确认该部署是否已成为 Current；未成为 Current 时，不把它当作线上版本 |
+| Current | 当前由生产域名指向、正在服务用户的部署 | 确认目标 URL 与 Production 环境；不可据此推断外部资源正常 |
 | Rolled back | 生产域名已回指旧部署 | 确认自动分配状态和目标 URL；不要假定环境变量或外部数据已回退 |
 
 ## 导入：GitHub 主路线与通用回退

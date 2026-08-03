@@ -87,6 +87,11 @@ class StepByStepVercelContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, reference)
 
+    def test_deployment_reference_separates_promoted_and_current_states(self):
+        reference = (VERCEL / "references" / "deployment-scenarios.md").read_text(encoding="utf-8")
+        self.assertRegex(reference, r"(?m)^\| Promoted \|")
+        self.assertRegex(reference, r"(?m)^\| Current \|")
+
 
 if __name__ == "__main__":
     unittest.main()
