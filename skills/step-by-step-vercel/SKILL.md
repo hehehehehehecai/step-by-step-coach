@@ -32,7 +32,7 @@ description: Use when step-by-step-coach routes a confirmed Vercel task, or when
 先只确认当前项目、目标环境（Preview 或 Production）、已完成的最后一步、当前页面或报错，以及用户可提供的经过遮盖证据。然后按以下顺序决定本轮：
 
 1. 信息不足时，只要求一个只读检查或一个澄清问题。
-2. 涉及密钥、环境变量或访问控制时，先读取 [环境与安全](references/environment-security.md)。不得要求用户发送真实密钥、Token、Cookie、完整环境变量 Value 或包含这些内容的未遮盖截图。
+2. 涉及密钥、环境变量或访问控制时，先读取 [环境与安全](references/environment-security.md)。先识别单一目标环境或分支，再按其中的条件分支只选择一个动作；不得要求用户发送真实密钥、Token、Cookie、完整环境变量 Value 或包含这些内容的未遮盖截图，也不得在任何证据或回复中回显值。
 3. 涉及域名或 DNS 时，先读取 [域名与 DNS](references/domains-and-dns.md)；先识别现有记录与邮箱依赖，尤其不得删除或覆盖 MX 记录。
 4. 涉及项目导入、部署、Preview、Production、Functions 或回滚时，先读取 [部署场景](references/deployment-scenarios.md)。
 5. 涉及构建、运行时、日志或部署异常时，先读取 [排错场景](references/troubleshooting.md)。

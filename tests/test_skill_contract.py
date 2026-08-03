@@ -54,6 +54,22 @@ class StepByStepVercelContractTests(unittest.TestCase):
             self.assertIn(phrase, combined)
         self.assertIsNone(re.search(r"sk-[A-Za-z0-9]{20,}", combined))
 
+    def test_environment_reference_covers_secret_lifecycle(self):
+        reference = (VERCEL / "references" / "environment-security.md").read_text(encoding="utf-8")
+        for phrase in (
+            "Development",
+            "Preview",
+            "Production",
+            "NEXT_PUBLIC_",
+            "VITE_",
+            "Sensitive Environment Variables",
+            "不得要求用户发送真实",
+            "重新部署",
+            "撤销或轮换",
+            "不回显",
+        ):
+            self.assertIn(phrase, reference)
+
 
 if __name__ == "__main__":
     unittest.main()
