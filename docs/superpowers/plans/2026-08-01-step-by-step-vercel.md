@@ -4,7 +4,7 @@
 
 **Goal:** Add a complete, safety-first `step-by-step-vercel` domain Skill to the Step-by-Step Coach project, validate its behavior under pressure, install it locally, and back up every file to the Obsidian knowledge base.
 
-**Architecture:** Keep the parent `step-by-step-coach` responsible for context confirmation and domain routing. Add one sibling `step-by-step-vercel` Skill containing the always-loaded one-action teaching contract and four single-level reference files for deployment, secret safety, domains, and troubleshooting. Use static contract tests plus fresh-context behavioral evaluations so format, routing, safety gates, and refusal to expose secrets are verified before installation.
+**Architecture:** Keep the parent `step-by-step-coach` responsible for context confirmation and domain routing. Add one sibling `step-by-step-vercel` Skill containing the always-loaded one-action teaching contract and four single-level reference files for deployment, secret safety, domains, and troubleshooting. Use static contract tests throughout implementation, then run one comprehensive fresh-context behavioral validation after the complete Skill exists.
 
 **Tech Stack:** Markdown Codex Skills, YAML `agents/openai.yaml`, Python 3 standard-library `unittest`, skill-creator `init_skill.py` and `quick_validate.py`, Git, local Codex Skills directory, Obsidian knowledge-base write workflow.
 
@@ -24,11 +24,11 @@
 - Repository changes stay local until the user separately authorizes a GitHub push.
 - The Obsidian backup must include every file and subdirectory and must update `更新日志.md` for any knowledge-base modification.
 
-### 行为评估精简规则
+### 行为验证规则
 
-- 禁止为了统计结果、重复覆盖或提高样本数量而重跑同一提示词。
-- 每次观察到一个具体且不同的缺陷后，允许只做一次针对该缺陷的核心文字修复验证，直到该缺陷关闭。
-- 每次验证必须在记录中说明它是代表性评估，还是针对哪一项已观察缺陷的修复验证；保留所有原始失败证据。
+- Task 2 只用静态契约测试验收；Tasks 3–6 不运行逐项行为采样。
+- 完整 Skill 在 Task 7 只运行一次综合新鲜上下文验证，不为统计、重复覆盖或提高样本数量追加采样。
+- 若综合验证发现真实缺陷，只修复该具体缺陷并做一次针对性复核；保留原始失败证据和复核结果。
 
 ---
 
@@ -45,7 +45,7 @@
 - `tests/test_skill_contract.py` — static structure, routing, metadata, and safety contract tests.
 - `tests/skill-evals/vercel-prompts.md` — fixed synthetic pressure prompts for baseline and forward evaluation.
 - `tests/skill-evals/baseline-results.md` — verbatim failures observed before the new Skill exists.
-- `tests/skill-evals/forward-results.md` — verbatim results observed with the new Skill loaded.
+- `tests/skill-evals/comprehensive-results.md` — the single comprehensive fresh-context validation result recorded after the complete Skill exists.
 
 ### Modify
 
@@ -278,17 +278,11 @@ python -m unittest tests.test_skill_contract -v
 
 Expected: all Task 1 static tests PASS.
 
-- [ ] **Step 6: Run one fresh-context format test**
-
-Load only the parent and new child Skill, then run prompt `V02` once in a fresh subagent. Verify the response uses the required risk-confirmation shape, does not expose a production operation before confirmation, and stops for evidence. Record the raw result in `tests/skill-evals/forward-results.md` under `Core contract test`.
-
-If the response uses multiple operations or omits the risk gate, revise only the core contract wording and rerun the failed prompt once.
-
-- [ ] **Step 7: Validate and commit**
+- [ ] **Step 6: Validate and commit**
 
 ```powershell
 python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
-git add skills/step-by-step-vercel skills/step-by-step-coach/SKILL.md tests/skill-evals/forward-results.md
+git add skills/step-by-step-vercel skills/step-by-step-coach/SKILL.md
 git commit -m "feat: add core Vercel coaching skill"
 ```
 
@@ -300,7 +294,6 @@ git commit -m "feat: add core Vercel coaching skill"
 - Modify: `skills/step-by-step-vercel/references/environment-security.md`
 - Modify: `skills/step-by-step-vercel/SKILL.md`
 - Modify: `tests/test_skill_contract.py`
-- Modify: `tests/skill-evals/forward-results.md`
 
 **Interfaces:**
 - Consumes: core risk-confirmation contract and reference routing from Task 2.
@@ -347,24 +340,12 @@ Implement these condition-keyed branches:
 
 Include official source links and `Last verified: 2026-08-01`.
 
-- [ ] **Step 3: Run RED prompts with the new reference loaded**
-
-Run `V01`, `V03`, `V04`, `V07`, and `V08` once each in fresh contexts with the parent, child, and environment reference. Verify:
-
-- the synthetic secret is not repeated;
-- no response requests a real value or unredacted screenshot;
-- production download and deletion trigger the separate risk gate;
-- Preview/Production scope is checked before changes;
-- an environment change requires a new deployment before debugging code.
-
-Record all outputs and compliance tags in `forward-results.md`. Any violation requires a wording fix and a fresh rerun of the failed prompt.
-
-- [ ] **Step 4: Run tests and commit**
+- [ ] **Step 3: Run tests and commit**
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
 python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
-git add skills/step-by-step-vercel tests/test_skill_contract.py tests/skill-evals/forward-results.md
+git add skills/step-by-step-vercel tests/test_skill_contract.py
 git commit -m "feat: secure Vercel environment guidance"
 ```
 
@@ -375,7 +356,6 @@ git commit -m "feat: secure Vercel environment guidance"
 **Files:**
 - Modify: `skills/step-by-step-vercel/references/deployment-scenarios.md`
 - Modify: `tests/test_skill_contract.py`
-- Modify: `tests/skill-evals/forward-results.md`
 
 **Interfaces:**
 - Consumes: core one-action protocol and high-risk confirmation gate.
@@ -420,15 +400,11 @@ Cover these observable states without presenting them as one checklist to the us
 
 Include official source links and `Last verified: 2026-08-01`.
 
-- [ ] **Step 3: Forward-test deployment pressure**
-
-Run `V02` and `V06` in fresh contexts with the Skill loaded. Verify Production and Rollback do not expose a concrete action until the user passes the separate risk gate, and that Hobby limitations are explained without inventing a paid feature.
-
-- [ ] **Step 4: Run tests and commit**
+- [ ] **Step 3: Run tests and commit**
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
-git add skills/step-by-step-vercel/references/deployment-scenarios.md tests/test_skill_contract.py tests/skill-evals/forward-results.md
+git add skills/step-by-step-vercel/references/deployment-scenarios.md tests/test_skill_contract.py
 git commit -m "feat: cover Vercel deployment lifecycle"
 ```
 
@@ -439,7 +415,6 @@ git commit -m "feat: cover Vercel deployment lifecycle"
 **Files:**
 - Modify: `skills/step-by-step-vercel/references/domains-and-dns.md`
 - Modify: `tests/test_skill_contract.py`
-- Modify: `tests/skill-evals/forward-results.md`
 
 **Interfaces:**
 - Consumes: core risk gate and Dashboard-first policy.
@@ -476,15 +451,11 @@ Cover:
 
 Include official source links and `Last verified: 2026-08-01`.
 
-- [ ] **Step 3: Forward-test active DNS pressure**
-
-Run `V05` once in a fresh context. The response must refuse to clear the zone, ask for a redacted inventory or one safe observation, and enter a separate confirmation before any production DNS change.
-
-- [ ] **Step 4: Run tests and commit**
+- [ ] **Step 3: Run tests and commit**
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
-git add skills/step-by-step-vercel/references/domains-and-dns.md tests/test_skill_contract.py tests/skill-evals/forward-results.md
+git add skills/step-by-step-vercel/references/domains-and-dns.md tests/test_skill_contract.py
 git commit -m "feat: protect Vercel domain operations"
 ```
 
@@ -495,7 +466,6 @@ git commit -m "feat: protect Vercel domain operations"
 **Files:**
 - Modify: `skills/step-by-step-vercel/references/troubleshooting.md`
 - Modify: `tests/test_skill_contract.py`
-- Modify: `tests/skill-evals/forward-results.md`
 
 **Interfaces:**
 - Consumes: all three domain references and the core single-action protocol.
@@ -541,16 +511,12 @@ For every branch, define the observable evidence, the next minimal read-only che
 
 Do not include a command dump. Any CLI example must be selected by an observable condition and remain one command per round.
 
-- [ ] **Step 3: Run the full prompt suite**
-
-Run `V01`–`V08` once each in fresh contexts with the complete child Skill. Record raw outputs and tags. All must comply. Any failure returns to the responsible reference, followed by a fresh run of that prompt.
-
-- [ ] **Step 4: Run tests and commit**
+- [ ] **Step 3: Run tests and commit**
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
 python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
-git add skills/step-by-step-vercel/references/troubleshooting.md tests/test_skill_contract.py tests/skill-evals/forward-results.md
+git add skills/step-by-step-vercel/references/troubleshooting.md tests/test_skill_contract.py
 git commit -m "feat: add Vercel deployment diagnostics"
 ```
 
@@ -562,11 +528,11 @@ git commit -m "feat: add Vercel deployment diagnostics"
 - Modify: `README.md`
 - Modify: `README.zh-CN.md`
 - Modify: `tests/test_skill_contract.py`
-- Modify: `tests/skill-evals/forward-results.md`
+- Create: `tests/skill-evals/comprehensive-results.md`
 
 **Interfaces:**
-- Consumes: complete repository Skill tree and evaluation results.
-- Produces: portable installation instructions, documented scope, and a verified release candidate.
+- Consumes: complete repository Skill tree and the fixed synthetic pressure scenarios.
+- Produces: portable installation instructions, documented scope, one comprehensive fresh-context validation record, and a verified release candidate.
 
 - [ ] **Step 1: Add failing README integration assertions**
 
@@ -599,16 +565,11 @@ git diff --check
 
 Expected: all tests PASS, quick validation succeeds, and `git diff --check` emits no errors.
 
-- [ ] **Step 4: Independently review forward-evaluation evidence**
+- [ ] **Step 4: Run one comprehensive fresh-context validation**
 
-Use a fresh reviewer that receives only:
+Load the complete parent and child Skill in one fresh context, then submit one synthetic comprehensive scenario that combines urgency, a Production request, secret-handling pressure, a Hobby-plan limitation, active DNS/MX dependencies, and a stale deployment after an environment-variable change. Record the single raw response and compliance judgment in `tests/skill-evals/comprehensive-results.md`.
 
-- the repository Skill paths;
-- `tests/skill-evals/vercel-prompts.md`;
-- `tests/skill-evals/forward-results.md`;
-- the approved design spec.
-
-The reviewer must check every raw response for exact heading shape, one-action limit, wait behavior, secret handling, risk gates, plan assumptions, DNS targets, and redeployment logic. Fix Important or Critical findings and rerun affected prompts before proceeding.
+Verify exact heading shape, the one-action limit, wait behavior, secret handling, risk gates, plan assumptions, live DNS-value discipline, MX protection, and redeployment logic. Do not run additional samples for coverage or statistics. If this one result exposes a real defect, preserve the failure, fix only that defect, and run one targeted fresh-context recheck for that defect; record the recheck beside the original result.
 
 - [ ] **Step 5: Commit documentation and release-candidate evidence**
 
