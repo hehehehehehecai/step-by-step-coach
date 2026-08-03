@@ -101,6 +101,23 @@ class StepByStepVercelContractTests(unittest.TestCase):
         self.assertNotIn("76.76.21.21", reference)
         self.assertIn("_acme-challenge 子域委派不同于整域 Nameserver 切换", reference)
 
+    def test_troubleshooting_reference_is_evidence_driven(self):
+        reference = (VERCEL / "references" / "troubleshooting.md").read_text(encoding="utf-8")
+        for phrase in (
+            "Git 集成",
+            "构建",
+            "运行时",
+            "环境变量",
+            "Functions",
+            "域名",
+            "网络",
+            "权限",
+            "套餐",
+            "完整报错",
+            "一次只检查一个",
+        ):
+            self.assertIn(phrase, reference)
+
 
 if __name__ == "__main__":
     unittest.main()
