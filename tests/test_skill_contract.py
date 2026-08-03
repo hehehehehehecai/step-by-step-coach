@@ -92,6 +92,14 @@ class StepByStepVercelContractTests(unittest.TestCase):
         self.assertRegex(reference, r"(?m)^\| Promoted \|")
         self.assertRegex(reference, r"(?m)^\| Current \|")
 
+    def test_domain_reference_uses_live_targets_and_protects_mail(self):
+        reference = (VERCEL / "references" / "domains-and-dns.md").read_text(encoding="utf-8")
+        for phrase in ("A", "CNAME", "TXT", "NS", "MX", "CAA", "SSL", "TTL", "传播"):
+            self.assertIn(phrase, reference)
+        self.assertIn("Dashboard 当前显示", reference)
+        self.assertIn("不得清空", reference)
+        self.assertNotIn("76.76.21.21", reference)
+
 
 if __name__ == "__main__":
     unittest.main()
