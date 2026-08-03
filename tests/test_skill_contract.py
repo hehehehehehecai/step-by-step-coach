@@ -125,6 +125,19 @@ class StepByStepVercelContractTests(unittest.TestCase):
             self.assertIn("environment", readme.lower())
             self.assertIn("Vercel", readme)
 
+    def test_production_risk_card_covers_requested_change_set(self):
+        skill = (VERCEL / "SKILL.md").read_text(encoding="utf-8")
+        risk_section = skill.split("## 风险确认契约", 1)[1].split("## 完成标准", 1)[0]
+        for phrase in (
+            "不得索要或回显",
+            "Hobby",
+            "Dashboard 当前显示",
+            "实时 DNS",
+            "MX",
+            "重新部署",
+        ):
+            self.assertIn(phrase, risk_section)
+
 
 if __name__ == "__main__":
     unittest.main()
