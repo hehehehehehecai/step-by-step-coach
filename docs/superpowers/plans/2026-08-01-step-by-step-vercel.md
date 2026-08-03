@@ -55,11 +55,11 @@
 
 ### Install and back up
 
-- `C:/Users/admin/.codex/skills/step-by-step-coach/` — refreshed parent Skill installation.
-- `C:/Users/admin/.codex/skills/step-by-step-vercel/` — complete child Skill installation.
-- `D:/AI workplace/个人知识库/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-coach/` — refreshed complete parent backup.
-- `D:/AI workplace/个人知识库/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-vercel/` — complete child backup.
-- `D:/AI workplace/个人知识库/AI赋能知识库/更新日志.md` — one deduplicated, next-numbered knowledge-base change record.
+- `<CODEX_HOME>/skills/step-by-step-coach/` — refreshed parent Skill installation.
+- `<CODEX_HOME>/skills/step-by-step-vercel/` — complete child Skill installation.
+- `<OBSIDIAN_VAULT>/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-coach/` — refreshed complete parent backup.
+- `<OBSIDIAN_VAULT>/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-vercel/` — complete child backup.
+- `<OBSIDIAN_VAULT>/AI赋能知识库/更新日志.md` — one deduplicated, next-numbered knowledge-base change record.
 
 ---
 
@@ -231,7 +231,7 @@ git commit -m "test: establish Vercel coaching baseline"
 Run from the repository root:
 
 ```powershell
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\init_skill.py step-by-step-vercel --path skills --resources references --interface 'display_name=一步一教：Vercel' --interface 'short_description=一次一个操作，安全完成 Vercel 部署、密钥、域名与排错' --interface 'default_prompt=使用 $step-by-step-vercel，一步一教地帮助我安全完成当前 Vercel 操作。'
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\init_skill.py" step-by-step-vercel --path skills --resources references --interface 'display_name=一步一教：Vercel' --interface 'short_description=一次一个操作，安全完成 Vercel 部署、密钥、域名与排错' --interface 'default_prompt=使用 $step-by-step-vercel，一步一教地帮助我安全完成当前 Vercel 操作。'
 ```
 
 Expected: the Skill directory, `SKILL.md`, `agents/openai.yaml`, and `references/` are created without example placeholders.
@@ -281,7 +281,7 @@ Expected: all Task 1 static tests PASS.
 - [ ] **Step 6: Validate and commit**
 
 ```powershell
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-vercel
 git add skills/step-by-step-vercel skills/step-by-step-coach/SKILL.md
 git commit -m "feat: add core Vercel coaching skill"
 ```
@@ -344,7 +344,7 @@ Include official source links and `Last verified: 2026-08-01`.
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-vercel
 git add skills/step-by-step-vercel tests/test_skill_contract.py
 git commit -m "feat: secure Vercel environment guidance"
 ```
@@ -515,7 +515,7 @@ Do not include a command dump. Any CLI example must be selected by an observable
 
 ```powershell
 python -m unittest tests.test_skill_contract -v
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-vercel
 git add skills/step-by-step-vercel/references/troubleshooting.md tests/test_skill_contract.py
 git commit -m "feat: add Vercel deployment diagnostics"
 ```
@@ -559,7 +559,7 @@ Keep the English and Chinese documents semantically aligned. Do not add real cre
 
 ```powershell
 python -m unittest discover -s tests -p "test_*.py" -v
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-vercel
 git diff --check
 ```
 
@@ -583,11 +583,11 @@ git commit -m "docs: document Vercel coaching workflow"
 ### Task 8: Install locally and create the complete Obsidian backup
 
 **Files:**
-- Install: `C:/Users/admin/.codex/skills/step-by-step-coach/`
-- Install: `C:/Users/admin/.codex/skills/step-by-step-vercel/`
-- Modify backup: `D:/AI workplace/个人知识库/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-coach/`
-- Create backup: `D:/AI workplace/个人知识库/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-vercel/`
-- Modify: `D:/AI workplace/个人知识库/AI赋能知识库/更新日志.md`
+- Install: `<CODEX_HOME>/skills/step-by-step-coach/`
+- Install: `<CODEX_HOME>/skills/step-by-step-vercel/`
+- Modify backup: `<OBSIDIAN_VAULT>/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-coach/`
+- Create backup: `<OBSIDIAN_VAULT>/AI赋能知识库/99_原始资料归档/Codex个人Skills备份/step-by-step-vercel/`
+- Modify: `<OBSIDIAN_VAULT>/AI赋能知识库/更新日志.md`
 
 **Interfaces:**
 - Consumes: the reviewed repository copies from Task 7.
@@ -659,8 +659,8 @@ Summarize exact files created or refreshed, skipped duplicates, hash verificatio
 
 ```powershell
 python -m unittest discover -s tests -p "test_*.py" -v
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-coach
-python C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\step-by-step-vercel
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-coach
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" skills\step-by-step-vercel
 git diff --check
 git status --short
 ```
