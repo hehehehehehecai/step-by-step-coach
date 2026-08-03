@@ -99,6 +99,7 @@ class StepByStepVercelContractTests(unittest.TestCase):
         self.assertIn("Dashboard 当前显示", reference)
         self.assertIn("不得清空", reference)
         self.assertNotIn("76.76.21.21", reference)
+        self.assertIn("_acme-challenge 子域委派不同于整域 Nameserver 切换", reference)
 
 
 if __name__ == "__main__":

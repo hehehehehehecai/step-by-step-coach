@@ -4,7 +4,7 @@
 
 Last verified: 2026-08-03
 
-官方依据：[设置自定义域名](https://vercel.com/docs/domains/set-up-custom-domain)、[域名排错](https://vercel.com/docs/domains/troubleshooting)、[使用 DNS](https://vercel.com/docs/domains/working-with-dns)、[使用 Nameservers](https://vercel.com/docs/domains/working-with-nameservers)、[vercel domains](https://vercel.com/docs/cli/domains)、[vercel dns](https://vercel.com/docs/cli/dns)。
+官方依据：[设置自定义域名](https://vercel.com/docs/domains/set-up-custom-domain)、[域名排错](https://vercel.com/docs/domains/troubleshooting)、[使用 DNS](https://vercel.com/docs/domains/working-with-dns)、[使用 Nameservers](https://vercel.com/docs/domains/working-with-nameservers)、[不切换 Vercel Nameservers 使用通配符域名](https://vercel.com/kb/guide/wildcard-domain-without-vercel-nameservers)、[vercel domains](https://vercel.com/docs/cli/domains)、[vercel dns](https://vercel.com/docs/cli/dns)。
 
 ## 不可跳过的变更前盘点
 
@@ -31,15 +31,17 @@ Last verified: 2026-08-03
 
 - **Apex 根域**（如 `example.com`）与**子域**（如 `www.example.com`）的 DNS 需求不同。仅在 Dashboard 当前显示或当前官方诊断结果明确要求时，才配置对应的 A 或 CNAME 记录；不得硬编码目标值。
 - A、CNAME、TXT、NS、MX、CAA 可并存于同一 DNS 区，但记录名称、DNS 提供商规则和既有服务可能决定其是否冲突。修改前必须核对同名记录及其用途；不能仅凭记录类型判断可删除。
-- 使用 Vercel Nameservers 是权威 DNS 委派变更，不是普通网站记录更新。**NS** 变更会影响整个域名的解析，应视为高风险；先完成邮件和无关服务迁移清单、回退方案与独立风险确认，再执行一个操作。
-- 通配符域名（例如 `*.example.com`）需要 Vercel Nameservers 才能支持 Vercel 的通配符证书流程。通配符与 Nameservers 都是高风险：它们可能改变未知子域的解析或证书覆盖范围，未确认现有子域与邮件前不得继续。
+- **整域 Nameserver 切换**是权威 DNS 委派变更，不是普通网站记录更新；它会接管整个 DNS 区的解析。它属于高风险：先完成邮件和无关服务迁移清单、回退方案与独立风险确认，再执行一个操作。切换后，必须在目标 DNS 区重建仍需保留的 MX、关联 TXT 和无关服务记录。
+- _acme-challenge 子域委派不同于整域 Nameserver 切换：它只把证书 DNS-01 验证子域的 NS 委派给 Vercel，不接管整域 DNS，也不迁移或改写整域 MX；其他子域继续由现有 DNS 提供方解析。该方式仅在 Dashboard 当前显示和 Vercel 官方指导均适用时，作为无法切换 Apex Nameservers 的通配符子域证书替代路线；不得将其用于需要整域通配符的情形。
+- `_acme-challenge` 子域委派仍是高风险动作，必须独立完成风险确认：它可能阻止其他托管商为受影响名称签发证书。变更前先盘点现有 `_acme-challenge`、证书提供方、相关通配符与回退所需 NS；确认不会影响现有证书服务后，才按 Dashboard 当前显示或官方指导进行单一变更。
+- 通配符与两类 NS 变更都可能影响证书覆盖范围。未确认现有子域、证书服务与邮件边界前不得继续；只有整域 Nameserver 切换才需要迁移 MX 和其他整域记录。
 
 ## 邮件、SSL 与 CAA 保护
 
 - **MX** 记录决定邮件投递路径。添加网站 A 或 CNAME 记录不等于可以删除 MX；切换 Nameservers 前必须把每条仍需保留的 MX 及关联 TXT 按盘点迁移到新 DNS 区，并在传播后只读核对。
 - Vercel 会自动为已正确配置的域名申请 SSL 证书。若 SSL 仍在等待，不要反复切换记录，也不要宣称证书已经生效；先读取 Dashboard 诊断。
 - **CAA** 会限制可签发证书的机构。若现有 CAA 存在，严格遵循 Dashboard 当前显示和 Vercel 官方 SSL 诊断的要求；不得因修复 SSL 而删除现有 CAA 或放宽其他服务所需限制。
-- 对非通配符域名，Vercel 的证书验证依赖域名正确指向；对通配符域名，Vercel 要求 Nameservers 方法。遇到 `_acme-challenge` 或其他证书验证 TXT 时，先确认其归属和影响，再处理，不能将其视为无用记录。
+- 对非通配符域名，Vercel 的证书验证依赖域名正确指向；对通配符域名，优先遵循 Dashboard 当前显示与官方指导，按适用情形选择整域 Nameserver 切换或 `_acme-challenge` 子域委派。遇到 `_acme-challenge` 或其他证书验证 TXT 时，先确认其归属和影响，再处理，不能将其视为无用记录。
 
 ## 计划切换、传播与回退
 
