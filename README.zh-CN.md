@@ -37,6 +37,8 @@ skills/
 - `step-by-step-git`：负责 Git/GitHub 状态判断、报错处理和安全仓库操作。
 - `step-by-step-vercel`：在父 Skill 确认背景后，负责 Vercel 部署与配置判断。
 
+两个子 Skill 都显式允许父 Skill 在用户确认领域后进行隐式路由。普通 Git 或 Vercel 概念问答不会因此自动进入一步一教；只有用户要求单步指导时才触发。
+
 ## 安装
 
 克隆本仓库后，将三个完整的 Skill 目录复制到个人 Codex Skills 目录。
@@ -58,6 +60,8 @@ cp -R ./skills/step-by-step-vercel ~/.codex/skills/
 ```
 
 安装后重启 Codex。
+
+必须把三个完整的 Skill 目录作为同级目录一起安装，只更新父 Skill 会造成 Git 或 Vercel 依赖不完整。Codex 会在任务启动时建立可用 Skill 目录，因此每次安装或更新后都要重启 Codex。如果个人 Skills 目录中已经存在子 Skill，但当前任务仍显示不可用，不要再提供路径；请重启 Codex 并新建任务，让 Skill 目录刷新。
 
 ## 使用方式
 

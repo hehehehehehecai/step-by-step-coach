@@ -116,19 +116,32 @@ description: Use when the user explicitly asks for “一步一教”, wants gui
 
 用户否认或补充时，更新确认卡并再次等待。只有用户明确确认后才进入领域路由。
 
+## 子 Skill 可用性预检
+
+只在用户明确确认任务背景和 Git 或 Vercel 领域后执行预检。普通概念问答没有要求“一步一教”时，不进入本 Skill，也不加载领域子 Skill。
+
+根据目标领域确定唯一依赖：Git/GitHub 使用 `step-by-step-git`，Vercel 使用 `step-by-step-vercel`。然后严格按以下顺序处理：
+
+1. **当前任务可发现**：完整读取目标子 Skill 及其要求的参考文件，再进入领域路由。不得凭父 Skill 的摘要代替子 Skill。
+2. **不可发现，但标准安装位置存在**：检查 `<CODEX_HOME>/skills/<child>/SKILL.md`。若文件存在，说明子 Skill 已安装但当前任务的 Skill 目录尚未刷新；停止教学并请用户重启 Codex。不得把它报告成子 Skill 文件缺失。
+3. **标准安装位置不存在，但存在可恢复副本**：退出教学状态，只读查找仓库副本或知识库备份中的同名完整目录。找到后核对全部文件与子目录；需要写入个人 Skills 目录时申请相应权限，恢复后要求重启 Codex。
+4. **所有位置均不存在**：明确说明依赖缺失以及已经检查的位置，停止当前教学；不得临时把 Git 或 Vercel 领域规则复制进父 Skill，也不得凭通用知识继续冒充该子 Skill。
+
+上述检查、恢复和重启提示都是 Codex 基础设施动作，必须使用四标题教学卡之外的简短说明；不得要求用户提供子 Skill 路径，不计入 Git 或 Vercel 教学步骤，也不得在依赖恢复完成前给出任何被教学的 Git、GitHub 或 Vercel 操作。
+
 ## 领域路由
 
 Git、GitHub、仓库上传、分支、提交、推送、Pull Request、合并和冲突场景：
 
 **REQUIRED SUB-SKILL:** Use step-by-step-git.
 
-必须先完整读取子 Skill，再继续。没有对应子 Skill 的领域，应说明尚未配置该领域，不能临时给出一整套流程冒充单步教学。
+用户明确确认 Git 或 GitHub 领域后，必须先按“子 Skill 可用性预检”处理，并完整读取子 Skill，再继续。没有对应子 Skill 的领域，应说明尚未配置该领域，不能临时给出一整套流程冒充单步教学。
 
 Vercel、网站部署、Preview、Production、环境变量、密钥、域名、DNS、Functions 和 Vercel 日志场景：
 
 **REQUIRED SUB-SKILL:** Use step-by-step-vercel.
 
-必须先完整读取 `step-by-step-vercel`，再开始教学。
+用户明确确认 Vercel 领域后，必须先按“子 Skill 可用性预检”处理，并完整读取 `step-by-step-vercel`，再开始教学。
 
 ## 单步教学协议
 

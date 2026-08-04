@@ -37,6 +37,8 @@ skills/
 - `step-by-step-git` handles Git and GitHub state, errors, and safe repository operations.
 - `step-by-step-vercel` handles Vercel deployment and configuration decisions after the parent has confirmed context.
 
+Both child Skills explicitly allow implicit routing from the parent after you confirm the domain. Ordinary Git or Vercel questions do not enter coaching unless you ask for one-action-at-a-time guidance.
+
 ## Install
 
 Clone this repository, then copy all three complete Skill directories into your personal Codex Skills directory.
@@ -58,6 +60,8 @@ cp -R ./skills/step-by-step-vercel ~/.codex/skills/
 ```
 
 Restart Codex after installation.
+
+Install all three complete Skill directories as siblings. Updating only the parent leaves its Git and Vercel dependencies incomplete. Codex builds the available-Skill catalog when a task starts, so restart Codex after every installation or update. If a child directory exists under your personal Skills directory but the current task says it is unavailable, do not provide a path: restart Codex and open a fresh task so the catalog can refresh.
 
 ## Use
 

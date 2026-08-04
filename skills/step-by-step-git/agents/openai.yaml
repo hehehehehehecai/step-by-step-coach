@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $step-by-step-git to guide me through this Git or GitHub task one action at a time."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true
