@@ -6,6 +6,16 @@
 
 很多教程会一次性给出完整清单。“一步一教”换了一种方式：先只做一件事，等你提供真实页面、输出或报错，再根据证据决定下一步。它适合 Git 新手、偶尔操作的人、需要接触仓库的非开发者，以及刚开始 Vibe Coding、希望先弄懂再动手的用户。
 
+## 宣传视频
+
+<p align="center">
+  <a href="step-by-step-coach-promo.mp4">
+    <img src="step-by-step-coach-promo-cover.png" alt="一步一教宣传视频封面" width="320">
+  </a>
+</p>
+
+<p align="center"><a href="step-by-step-coach-promo.mp4">观看 44 秒竖屏宣传视频</a></p>
+
 ## Skill 架构
 
 本仓库包含三个互相配合、彼此独立的 Codex Skill。安装或复制时必须保留每个目录及其全部子目录。

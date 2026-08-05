@@ -6,6 +6,16 @@
 
 Most tutorials give a whole checklist. This project instead gives one action, waits for the real result, then chooses the next action from that evidence. It is for Git beginners, occasional users, non-developers, and people starting with Vibe Coding who want to understand what happens before they change anything.
 
+## Promo Video
+
+<p align="center">
+  <a href="step-by-step-coach-promo.mp4">
+    <img src="step-by-step-coach-promo-cover.png" alt="Step-by-Step Coach promo video cover" width="320">
+  </a>
+</p>
+
+<p align="center"><a href="step-by-step-coach-promo.mp4">Watch the 44-second vertical promo video</a></p>
+
 ## Skills
 
 This repository contains three sibling Codex Skills. Keep every directory and subdirectory intact when installing or copying them.
